@@ -94,3 +94,28 @@ The model registry has 4 options for each trained model:
 - Archived: the model has been replaced by another version. 
 
 A bit like git commit messages, if moving models between staging/production: write messages to inform team as to why and when. (Add in "description" section. )
+
+
+#### MlFlow in Practice:
+
+When using MlFlow you should consider the following:
+
+- Do I need a database for tracking my experiment information like SQLLite, or is storing on my file system enough? Furthermore if you've chosen to use a database, do you need a cloud database or is a local one enough? 
+- Similarly: do I need a remote artifacts store or a remote tracking server?
+
+The answer to these should depend on how collaborative the project is - if the project is a solo one then storing things locally should be enough. However if working in a greater team with multiple projects then using cloud tools is essential. Note: if you use the MlFlow without the database backend then you won't be able to access the Model registry. 
+
+The mlruns directory contains the folders on information on runs/metrics/params. 
+
+If you want to run mlflow remotely you would:
+
+- Setup a database (postgres/SQLlite) on a cloud platform, that way your tracking server can find the database globally. 
+- Create an artifact store on the cloud: GCP has it's own dedicated section however you could just use an S3 bucket. 
+- On our EC2/GCE instance, we start Mlflow by setting the backend to the database we've created. Doing this will start the server on the instance on a particular port.
+- Then we can use our IP address of the instance along with the port number that the server is running on to view the Mlflow system globally. 
+
+
+#### Limitations of MlFlow:
+
+- Unlike TFX, Mlflow doesn't come with data versioning tools which can make it somewhat tricky to reproduce a model. 
+- Along with not being able to track tabular datasets, can't track unstructed datasets like images/audio/text. 
