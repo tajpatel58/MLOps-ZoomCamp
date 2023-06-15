@@ -60,7 +60,7 @@ If correctly setup we should have something like:
 - As mentioned previously we can save models using the pickle library. To make this file shareable we can use the log_artifact method of mlflow to store this on our UI and furthermore make it available to other data scientists. 
 - Though logging artifacts is okay, what if we had multiple versions pickled? What was the environment used to create the model? What preprocessing was needed? 
 - To account for this, we can use built in methods for Mlflow. The format goes: "mlflow.xgboost.log_model(model_object, artifact_path)" - changing the framework from xgboost to whatever has been used. This like autologging, tracks the dependencies, environment information, and also the model artifact. 
-- We can also use the mlflow.log_artifact method to store python objects needed for p reprocessing: eg: OneHotEncoders, RobustScalers etc.
+- We can also use the mlflow.log_artifact method to store python objects needed for preprocessing: eg: OneHotEncoders, RobustScalers etc.
 - By managing our models like this, then we have everything we need to provide inference and track models. 
 - Furthermore, this method provides an API to Pandas and PySpark: by using the run URI (unique resource identifier), we can load the model into Python and use it for inference on PySpark and Pandas dataframes. (Loads into PySpark as a UDF)
 - We can also load the model in as a Python function OR as an object of the framework we used to train. Eg: can load an XGBoost model as a python function OR as an XGBoost model. (These are calls "model flavours". - either as a Python function or a model from the framework we used.)
