@@ -13,4 +13,28 @@ The goal of this chapter will be to learn some of the responsibilities of an ML 
 - Ensure this pipeline automatically retries incase of failures and provides email updates when components complete/fail. 
 - Implement caching, in the sense of if inputs don't change or some computation is already done then we use the cached data. 
 
-Prefect is a tool that we can use to accomplish these tasks and build these workflows. 
+##### Introduction to Prefect:
+
+Prefect is a tool that we can use to accomplish these tasks and build these workflows. We can install this as a python package and use some of it's functionality through decorators. 
+
+Some Prefect terminology:
+
+These will make more sense once we practice and may not be entirely correct:
+
+- Task: A python function used to to carry out some "work". 
+- Flow: A flow is another python function which calls a set of tasks. These flows can be setup to know the dependencies needed to run a task. Eg. If live weather data needs to be fetched, then we can create a flow to run tasks only once the live weather data is available. 
+- SubFlow: A subflow is a flow that will be called upon by another "parent" flow. 
+
+Much like mlFlow Prefect is installed via pip, then we can run a server locally to gain access to the Prefect UI. 
+
+Start Prefect UI: `prefect server start`
+
+Note the server will start on a particular port and pipeline metadata will be stored in SQLite database (like Mlflow). We need to make sure our UI starts correctly and knows where the database is located. 
+
+- The "cat_facts.py" gives a basic example of a task and flow within Prefect. We can simply run the scripts once the flows/tasks are setup and the "flow" run will appear on our Prefect UI. 
+
+Log Prints: `@flow(log_prints=True)` means when we log any print statements within a flow. 
+
+- Each "flow" within a Python script appears within our Prefect UI. Maybe we have a script for all preprocessing on data? Each preprocessing component is a "task" and all the calls are contained within a "flow". 
+
+- We can also have flows called from other flows. Eg say to preprocess some weather data - we would have a flow that fetches live weather information and we'd call this flow within the "preprocessing" flow. 
