@@ -29,10 +29,25 @@ MlFlow can be thought of as a tool to track:
 Installation and basics:
 
 - MlFlow can be installed using pip. 
-- Check installation with "mlflow" in terminal. 
-- Running "mlflow ui" in terminal will start the local version of mlflow and can open a webpage for the mlflow gui. 
-- Recall from our ML Ops course with Andrew Ng, packages like mlflow and TFX have a metadata store. A metadata store is a sql database that stores the data lineage. Ie: as data passes from component to component we want to keep track of the steps used, this tracking is done using s SQL database. 
-- To ensure mlflow runs with this backend database we need to use the command: "mlflow ui --backend-store-uri sqlite:///mlflow.db" Also need to set this in python if using within a notebook. (mlflow.set_tracking_uri("sqlite:///mlflow.db"))
+- Check installation with the following in terminal:
+
+`mlflow --version`
+
+
+- Running "mlflow ui" in terminal will start the local version of mlflow and can open a webpage for the mlflow gui:
+
+`mlflow ui`
+
+
+- Recall from our ML Ops course with Andrew Ng, packages like mlflow and TFX have a metadata store. A metadata store is a sql database that stores the data lineage. Ie: as data passes from component to component we want to keep track of the steps used, this tracking is done using a SQL database. 
+- To ensure mlflow runs with this backend database we need to use the command: 
+
+`mlflow ui --backend-store-uri sqlite:///mlflow.db` 
+
+Also need to set this in python if using within a notebook:
+
+`mlflow.set_tracking_uri("sqlite:///mlflow.db)`
+
 - Note set tracking_uri first before anything else. This allows mlflow to update the correct db file and then mlflow will correctly display the information on the ui. 
 - When starting the mlflow ui you can also pass the flag "--port" to specify the port that you want the mlflow ui to run on. 
 - Once we start using the mlflow within a notebook, the "mlflow.db" file should be created and running mlflow ui command in terminal will start the mlflow interface with the data from the database.
@@ -40,14 +55,18 @@ Installation and basics:
 
 #### Logging Hyperparams and Metrics:
 
-- To begin using mlflow once imported, within our training block of code, we need to wrap it in a special mlflow context manager. 
-- Some common logging syntax within the mlflow context manager: "mlflow.log_param(""PARAMETER_NAME"", ""PARAMETER_VALUE"")
-- Similarly: mlflow.log_metric(""METRIC_NAME"", ""METRIC_VALUE"")
-- For logging artifacts like a pickle'd version of a model we have: mlflow.log_artifact(""LOCAL_PATH"", ""ARTIFACT_PATH"")
-- You can add tags to model runs, based on the type of model: eg if we only wanted to look at tree based models could do: mlflow.set_tag("model_type", "tree")
+- To begin using mlflow once imported, within our training block of code, we need to wrap it in a special mlflow context manager:
+
+`with mlflow.start_run(run_name=<...>)`
+
+
+- Some common logging syntax within the mlflow context manager: `mlflow.log_param(""PARAMETER_NAME"", ""PARAMETER_VALUE"")`
+- Similarly: `mlflow.log_metric(""METRIC_NAME"", ""METRIC_VALUE"")`
+- For logging artifacts like a pickle'd version of a model we have: `mlflow.log_artifact(""LOCAL_PATH"", ""ARTIFACT_PATH"")`
+- You can add tags to model runs, based on the type of model: eg if we only wanted to look at tree based models could do: `mlflow.set_tag("model_type", "tree")`
 - In the Mlflow ui can use: tags.model_type = "tree", to see all models that are tree based.
 - Within the Mlflow UI can see the different combinations of hyperparameters used, and how this has affected the logging metrics. Eg: if we wanted to see how learning rate has impacted the RMSE. 
-- For some ML frameworks: sci-kit learn, XGBoost, PyTorch, TensorFlow etc we have "AutoLogging" so if a model is trained using any of these frameworks can enable automatic logging in MlFlow. eg for XGBoost we would use: mlflow.xgboost.autolog().
+- For some ML frameworks: sci-kit learn, XGBoost, PyTorch, TensorFlow etc we have "AutoLogging" so if a model is trained using any of these frameworks can enable automatic logging in MlFlow. eg for XGBoost we would use: `mlflow.xgboost.autolog()`
 - AutoLogging is super powerful in the sense that it will track all hyperparams, metrics and even creates an MLFLow Model so we can deploy, a requirements.txt and even information on feature importance. 
 
 If correctly setup we should have something like:
@@ -59,7 +78,7 @@ If correctly setup we should have something like:
 
 - As mentioned previously we can save models using the pickle library. To make this file shareable we can use the log_artifact method of mlflow to store this on our UI and furthermore make it available to other data scientists. 
 - Though logging artifacts is okay, what if we had multiple versions pickled? What was the environment used to create the model? What preprocessing was needed? 
-- To account for this, we can use built in methods for Mlflow. The format goes: "mlflow.xgboost.log_model(model_object, artifact_path)" - changing the framework from xgboost to whatever has been used. This like autologging, tracks the dependencies, environment information, and also the model artifact. 
+- To account for this, we can use built in methods for Mlflow. The format goes: `"mlflow.xgboost.log_model(model_object, artifact_path)"` - changing the framework from xgboost to whatever has been used. This like autologging, tracks the dependencies, environment information, and also the model artifact. 
 - We can also use the mlflow.log_artifact method to store python objects needed for preprocessing: eg: OneHotEncoders, RobustScalers etc.
 - By managing our models like this, then we have everything we need to provide inference and track models. 
 - Furthermore, this method provides an API to Pandas and PySpark: by using the run URI (unique resource identifier), we can load the model into Python and use it for inference on PySpark and Pandas dataframes. (Loads into PySpark as a UDF)

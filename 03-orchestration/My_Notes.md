@@ -37,4 +37,14 @@ Log Prints: `@flow(log_prints=True)` means when we log any print statements with
 
 - Each "flow" within a Python script appears within our Prefect UI. Maybe we have a script for all preprocessing on data? Each preprocessing component is a "task" and all the calls are contained within a "flow". 
 
-- We can also have flows called from other flows. Eg say to preprocess some weather data - we would have a flow that fetches live weather information and we'd call this flow within the "preprocessing" flow. 
+- We might have preprocessing in one flow, and training in another flow. Think of ADF - the more granular we get the easier it is to track failures/runs. 
+
+- We can also have flows called from other flows. Eg say to preprocess some weather data - we would have a flow that fetches live weather information and we'd call this flow within the "preprocessing" flow. To call a flow we simply call the function that has the `@flow` decorator.
+
+
+#### Prefect Usage/Tips:
+
+- Some flows/tasks might be fetching data via an API, it's best to set a few retries on this as often data fetching can fail:
+
+`@task(retries=4, retry_delay_seconds=0.3)`
+
