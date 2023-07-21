@@ -48,3 +48,29 @@ Log Prints: `@flow(log_prints=True)` means when we log any print statements with
 
 `@task(retries=4, retry_delay_seconds=0.3)`
 
+
+#### Prefect Deployment:
+
+So let's summarise what we've done so far. If we're working on a pipeline project:
+
+- We've created a series of python scripts that will fetch data, preprocess, train a model. 
+- Our python scripts are setup with `@flow`, and `@task` decorators so that each "component" is setup as a flow. 
+- Running these scripts will yield a series of runs on Prefect UI. 
+
+The goal now would be to be able to run this code on a virtual machine, that way it can be orchestrated. Remember orchestration can be thought of as the process of automating the running of processes. Doing so would allow a VM to spin up and run the collection of flows, essentially like a pipeline on ADF. 
+
+The following is a brief overview of how we can deploy our scripts. 
+
+![alt text](./images/flow-deployment-end-to-end.png "Prefect Deployment")
+
+
+The steps go:
+
+1. Run `prefect project init`, this will setup a prefect.yaml file which will specify if we need further dependencies for our scripts to run. Eg: may need a Docker container with certain versions of packages. We also specify where code needs to be pushed to and where the code needs to be pulled/fetched from. 
+2. We then go onto our Prefect UI to setup "Work Pools" which we can think of as a group fo workers that are ready for tasks. A bit like you might go to B&Q for handymen, you might go to `Google Cloud Run` if you want to execute your flow runs on this platform. OR you might use Azure Container Instances if you want to run code on Azure containers. Work pools are just what we use to run our flows - can even run as a subprocess on our laptops. 
+3. Then we can start our Work pools: `prefect worker start -p <pool name> -t process`. This gets our worker pool running. 
+4. We can then deploy our flow (though need to specify the exact flow we want to deploy, the name of the deployment and the pool it will run on). Eg:
+
+`prefect deploy cat_facts.py:fetch -n deployment_name -p work_pool_run_on`
+
+5. Now our flow has been deployed onto a worker pool/(set of workers) - that are equipped with the processing/task requirements. (speficied in prefect.yaml file) So we can finally trigger the run: `prefect deployment run flow_name/deployment_name`, which will run our code/flows on a container. These runs can be tracked via Prefect UI. 
