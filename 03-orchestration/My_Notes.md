@@ -67,10 +67,15 @@ The following is a brief overview of how we can deploy our scripts.
 The steps go:
 
 1. Run `prefect project init`, this will setup a prefect.yaml file which will specify if we need further dependencies for our scripts to run. Eg: may need a Docker container with certain versions of packages. We also specify where code needs to be pushed to and where the code needs to be pulled/fetched from. 
-2. We then go onto our Prefect UI to setup "Work Pools" which we can think of as a group fo workers that are ready for tasks. A bit like you might go to B&Q for handymen, you might go to `Google Cloud Run` if you want to execute your flow runs on this platform. OR you might use Azure Container Instances if you want to run code on Azure containers. Work pools are just what we use to run our flows - can even run as a subprocess on our laptops. 
+2. We then go onto our Prefect UI to setup "Work Pools" which we can think of as a group of workers that are ready for tasks. A bit like you might go to B&Q for handymen, you might go to `Google Cloud Run` if you want to execute your flow runs on this platform. OR you might use Azure Container Instances if you want to run code on Azure containers. Work pools are just what we use to run our flows - can even run as a subprocess on our laptops. 
 3. Then we can start our Work pools: `prefect worker start -p <pool name> -t process`. This gets our worker pool running. 
 4. We can then deploy our flow (though need to specify the exact flow we want to deploy, the name of the deployment and the pool it will run on). Eg:
 
 `prefect deploy cat_facts.py:fetch -n deployment_name -p work_pool_run_on`
 
 5. Now our flow has been deployed onto a worker pool/(set of workers) - that are equipped with the processing/task requirements. (speficied in prefect.yaml file) So we can finally trigger the run: `prefect deployment run flow_name/deployment_name`, which will run our code/flows on a container. These runs can be tracked via Prefect UI. 
+
+Notes:
+
+- "Blocks" are used to secure store credentials needed. For example if we need to access data from a Datalake, we can parse the credentials for AWS/GCP using the "blocks". 
+- Can schedule our Flow runs on our workers through the Prefect UI. At this point the workflow is auomated. We've essentially shcedulded a series of data preprocessing steps and model training.  
