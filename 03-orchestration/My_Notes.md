@@ -29,7 +29,7 @@ Much like mlFlow Prefect is installed via pip, then we can run a server locally 
 
 Start Prefect UI: `prefect server start`
 
-Note the server will start on a particular port and pipeline metadata will be stored in SQLite database (like Mlflow). We need to make sure our UI starts correctly and knows where the database is located. 
+Note the server will start on a particular port and pipeline metadata will be stored in SQLite database (like Mlflow). We need to make sure our UI starts correctly and knows where the database is located. Database is located by default in `~//prefect`
 
 - The "cat_facts.py" gives a basic example of a task and flow within Prefect. We can simply run the scripts once the flows/tasks are setup and the "flow" run will appear on our Prefect UI. 
 
@@ -78,4 +78,10 @@ The steps go:
 Notes:
 
 - "Blocks" are used to secure store credentials needed. For example if we need to access data from a Datalake, we can parse the credentials for AWS/GCP using the "blocks". 
-- Can schedule our Flow runs on our workers through the Prefect UI. At this point the workflow is auomated. We've essentially shcedulded a series of data preprocessing steps and model training.  
+- Can schedule our Flow runs on our workers through the Prefect UI. At this point the workflow is auomated. We've essentially shcedulded a series of data preprocessing steps and model training. 
+
+#### Prefect Cloud:
+- Prefect cloud is a hosted solution for Prefect, meaning we don't need to host the server on our laptops. 
+- Externally hosted means we can collaborate more effectively. 
+- Can visit: `https://www.prefect.io/cloud/` to login and create a workspace. 
+- Then from bash, can run: `prefect cloud login`, to setup credentials and that way any prefect flow runs are logged onto our cloud setups. 
