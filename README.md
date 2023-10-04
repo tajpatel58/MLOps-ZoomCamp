@@ -4,6 +4,8 @@
 
 - Concurrently with this course, I will develop a sentiment analysis model to assess the emotions expressed in reviews for my portfolio website's Chatbot. I intend to leverage the knowledge acquired in this course to streamline the model's deployment and productionization process.
 
+<img src="./images/MLOps_Cycle.jpg" alt="drawing" width="650"/>
+
 ## Module 1: Introduction
 - What is MLOps
 - MLOps maturity model
