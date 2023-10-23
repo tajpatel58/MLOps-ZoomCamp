@@ -21,3 +21,20 @@
 - This can be a many-many relationship, as we have multiple producers and multiple consumers. 
 - The terminology here sounds very Data Engineery so might be quite interesting to do a project in it later. 
 - Streaming is necessary when multiple data components need to be run on the data being streamed in. 
+
+
+### Flask + Docker:
+
+- Flask lets you build an API.
+- We know API’s are like servers in a restaurant, they are built to deal with types of requests and determine who 2 machines talk to each other. 
+- There are 4 main operations:
+  - GET: An operation that involves obtaining data from a resource.
+  - POST: An operation that submits data to be processed. Eg prediction of a datapoint.
+  - DELETE: An operation that deletes a resource/data from a resource.
+  - PUT: Updates a resource with new data.  
+- In our Flask App, data is typically sent as a JSON and prediction is returned as JSON. Should use the jsonify function from Flask. 
+- CURL, can be used to send data to the endpoint. 
+- CURL requires:
+  - Content type of what is being sent. 
+  - The actual data being sent. 
+  - The endpoint that the request should be sent to. 
