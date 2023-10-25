@@ -32,9 +32,30 @@
   - POST: An operation that submits data to be processed. Eg prediction of a datapoint.
   - DELETE: An operation that deletes a resource/data from a resource.
   - PUT: Updates a resource with new data.  
-- In our Flask App, data is typically sent as a JSON and prediction is returned as JSON. Should use the jsonify function from Flask. 
+- In our Flask App, data is typically sent as a JSON and prediction is returned as JSON, so we should use the jsonify function from Flask in our prediction function.
+    - `jsonify({"prediction" : predicted_output})`
 - CURL, can be used to send data to the endpoint. 
 - CURL requires:
   - Content type of what is being sent. 
   - The actual data being sent. 
   - The endpoint that the request should be sent to. 
+- We can use Pickle to store models, vectorizers, scalers and any further preprocessing variables needed. 
+- Our Flask app is created with the Flask method, and we pass the app name into the initializer. 
+
+    - `app = Flask("TextReviewsModel")`
+
+- Our predict method should be provided with a Flask decorator to tell the API how to deal with requests on this route, like below:
+
+    - `@app.route('/predict', methods=["POST"])`
+
+- We should add a debug mode incase we want to test out application locally like below. The debug method means that once the code is updated, the endpoint is also updated without having to restart the server.  
+    - `app.run(debug=True, host="0.0.0.0", port=9696)`
+
+- Once we run our python script with this, the server begins to run. We can then use CURL to send requests with data. As mentioned above CURL requests need to be in a particular format: 
+
+     - `curl -X POST "localhost:9696/predict" -H 'Content-Type: application/json' -d'
+{
+  "review": "This Chatbot is amazing"
+}'`
+
+- Note we can also use requests to exchange data with a web server. 
