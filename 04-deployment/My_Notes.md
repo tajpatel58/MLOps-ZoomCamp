@@ -23,9 +23,10 @@
 - Streaming is necessary when multiple data components need to be run on the data being streamed in. 
 
 
-### Flask + Docker:
+### Flask/FastAPI + Docker:
 
-- Flask lets you build an API.
+- Flask/FastAPI lets you build an API.
+- Both packages are great for API development but FastAPI is the more modern tool. 
 - We know API’s are like servers in a restaurant, they are built to deal with types of requests and determine who 2 machines talk to each other. 
 - There are 4 main operations:
   - GET: An operation that involves obtaining data from a resource.
@@ -43,13 +44,22 @@
 - Our Flask app is created with the Flask method, and we pass the app name into the initializer. 
 
     - `app = Flask("TextReviewsModel")`
+    - `app = FastAPI("TextReviewsModel")`
 
 - Our predict method should be provided with a Flask decorator to tell the API how to deal with requests on this route, like below:
 
     - `@app.route('/predict', methods=["POST"])`
 
-- We should add a debug mode incase we want to test out application locally like below. The debug method means that once the code is updated, the endpoint is also updated without having to restart the server.  
+- We should add a debug mode incase we want to test out application locally like below. The debug method means that once the code is updated, the endpoint is also updated without having to restart the server.
     - `app.run(debug=True, host="0.0.0.0", port=9696)`
+
+  - The command to run your app is different when using FastAPI, we run the following in terminal, then changes can be saved in API can be saved and API updates, it's the same as running Flask in debug mode:
+
+    - `uvicorn test_api:app --reload`
+
+- Clever feature of FastAPI, we can go on endpoints/docs and it will show the documentation for using the API, eg:
+
+  - `http://127.0.0.1:8000/docs`
 
 - Once we run our python script with this, the server begins to run. We can then use CURL to send requests with data. As mentioned above CURL requests need to be in a particular format: 
 
@@ -59,3 +69,18 @@
 }'`
 
 - Note we can also use requests to exchange data with a web server. 
+
+### PyDantic:
+
+- Here we take a small detour on pydantic, which is a package used to enforce structure of inputs and outputs in our API methods. 
+- So why might this be useful? 
+  - Well suppose we get a "PUT" method to update the entry into a database. Database have schemas so we can't simply add any data into a particular table. Hence we pydantic to ensure that the correct keys are present. 
+  - It provides input and output valdation of methods. Eg if a POST method should return an int, and we return a float, then that's a problem. 
+
+- The following can be used to create a dictionary like object with a set structure:
+  - `from pydantic import BaseModel`
+  - `class Name_Age(BaseModel):`
+    -   `name : str`
+    -   `age : int`
+
+- In summary, type hints with Pydantic are essential when building API's.
