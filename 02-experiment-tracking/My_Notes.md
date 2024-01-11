@@ -49,6 +49,7 @@ Also need to set this in python if using within a notebook:
 `mlflow.set_tracking_uri("sqlite:///mlflow.db)`
 
 - Note set tracking_uri first before anything else. This allows mlflow to update the correct db file and then mlflow will correctly display the information on the ui. 
+- In "set_tracking_uri" the prefix before the path tells mlflow the type of storage we want to use: file/database. 
 - When starting the mlflow ui you can also pass the flag "--port" to specify the port that you want the mlflow ui to run on:
 
 `mlflow ui --port 5000`
