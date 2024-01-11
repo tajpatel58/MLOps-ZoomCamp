@@ -38,9 +38,9 @@ Installation and basics:
 
 `mlflow ui`
 
-
+- Mlflow defaults to creating an "mlruns" folder, which running: `mlflow ui`, will open the GUI based on this folder. 
 - Recall from our ML Ops course with Andrew Ng, packages like mlflow and TFX have a metadata store. A metadata store is a sql database that stores the data lineage. Ie: as data passes from component to component we want to keep track of the steps used, this tracking is done using a SQL database. 
-- To ensure mlflow runs with this backend database we need to use the command: 
+-Mflow can also be configured with a backend database as it's easier to share across teams and we can even use a remote database: 
 
 `mlflow ui --backend-store-uri sqlite:///mlflow.db` 
 
@@ -49,7 +49,10 @@ Also need to set this in python if using within a notebook:
 `mlflow.set_tracking_uri("sqlite:///mlflow.db)`
 
 - Note set tracking_uri first before anything else. This allows mlflow to update the correct db file and then mlflow will correctly display the information on the ui. 
-- When starting the mlflow ui you can also pass the flag "--port" to specify the port that you want the mlflow ui to run on. 
+- When starting the mlflow ui you can also pass the flag "--port" to specify the port that you want the mlflow ui to run on:
+
+`mlflow ui --port 5000`
+
 - Once we start using the mlflow within a notebook, the "mlflow.db" file should be created and running mlflow ui command in terminal will start the mlflow interface with the data from the database.
 - When using mlflow within a notebook, we need to set the "ML Experiment" that we are working in. This is so mlflow can store our models/experiment runs under the correct project. 
 
