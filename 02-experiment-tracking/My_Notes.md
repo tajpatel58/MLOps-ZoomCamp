@@ -120,6 +120,16 @@ The model registry has 4 options for each trained model:
 
 A bit like git commit messages, if moving models between staging/production: write messages to inform team as to why and when. (Add in "description" section. )
 
+- Update: Model registry options mentioned above have been deprecated. Now we have version numbers and and tags. 
+
+- We can use `mlflow.search_runs(experiment_name=)`, to search all logged runs by metrics for a particular experiment. The output is a pandas dataframe that we can filter/sort. 
+
+- We can use `mlflow.register_model(run_id, ...)` to move a model from a run into the model registry. 
+
+- There are various ways to fetch the latest model from the model registry. Most of these methods require supplying a artifact/model uri. (unique resource identifier). If we want to load the model directly, then we need to specify the model name used in the model registry along with the artifact path to the "model.pkl" file , and the version number. (though we can use "latest" to get most recent.) `models:/{MODEL_NAME_IN_REGISTRY}/latest/model`
+
+- Alternatively, we can download all the artifacts with the method: `mlflow.artifacts.download_artifacts`. For this we need to supply the model name used in the model registry and the version only. (DON'T NEED PATH TO ACTUAL model.pkl): `models:/{MODEL_NAME_IN_REGISTRY}/latest.`
+
 
 #### MlFlow in Practice:
 
