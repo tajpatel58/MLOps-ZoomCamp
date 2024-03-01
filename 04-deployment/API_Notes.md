@@ -53,7 +53,7 @@
 - We should add a debug mode incase we want to test out application locally like below. The debug method means that once the code is updated, the endpoint is also updated without having to restart the server.
     - `app.run(debug=True, host="0.0.0.0", port=9696)`
 
-  In the FastAPI case: (uvicorn is a server service that allows concurrent requests)
+  In the FastAPI case we replace "main" with the script with our app: (uvicorn is a server service that allows concurrent requests)
     
     - `uvicorn main:app --host 0.0.0.0 --port 80`
 
